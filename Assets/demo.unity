@@ -222,6 +222,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &56513927
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +823,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &545081169 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: 4d46a1c13acf3d5498fc0a22b5cf0fd5,
@@ -839,6 +857,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   smooth: 0.1
+--- !u!114 &545081173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545081169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edeea7b5ef1c55249ac61dfa67e2e737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  allowVertical: 1
+  allowHorizontal: 1
 --- !u!1 &569027257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,6 +1060,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1001 &599144601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1129,6 +1171,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &606808120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,6 +1332,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &862482278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1515,6 +1575,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1001 &1125595603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1617,6 +1686,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &1218057822
 GameObject:
   m_ObjectHideFlags: 0
@@ -6836,6 +6914,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1001 &1477393385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6938,6 +7025,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1001 &1607654901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7040,6 +7136,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1001 &1667502364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7142,6 +7247,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &1700383721
 GameObject:
   m_ObjectHideFlags: 0
@@ -7455,6 +7569,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 545081171}
+    - targetCorrespondingSourceObject: {fileID: 100004, guid: 4d46a1c13acf3d5498fc0a22b5cf0fd5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 545081173}
   m_SourcePrefab: {fileID: 100100000, guid: 4d46a1c13acf3d5498fc0a22b5cf0fd5, type: 3}
 --- !u!1001 &1975601618
 PrefabInstance:
@@ -7558,6 +7676,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c4217d1598b30499cf20a063f92cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flightZoneRadius: 7
+  weightCohesionBase: 0.5
+  weightCohesionFear: 5
+  weightSeparationBase: 2
+  weightSeparationFear: 0
+  alignementZoneRadius: 3
+  weightAlignmentBase: 0.1
+  weightAlignmentFear: 1
+  weightEscape: 6
 --- !u!1 &2020710730
 GameObject:
   m_ObjectHideFlags: 0

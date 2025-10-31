@@ -22,11 +22,11 @@ public class SheepBoid : MonoBehaviour
     // === Herding parameters ===
 
 // Distance à laquelle le mouton commence à fuir le prédateur
-    [SerializeField] float flightZoneRadius = 7f;
+    [SerializeField] float flightZoneRadius = 3f;
 
 // --- Cohesion rule weights ---
     [SerializeField] float weightCohesionBase = 1.5f;
-    [SerializeField] float weightCohesionFear = 0f;
+    [SerializeField] float weightCohesionFear = 2f;
 
 // --- Separation rule weights ---
     [SerializeField] float weightSeparationBase = 2f;
@@ -38,7 +38,14 @@ public class SheepBoid : MonoBehaviour
     [SerializeField] float weightAlignmentFear = 1f;
 
 // --- Escape rule ---
-    [SerializeField] float weightEscape = 6f;
+    [SerializeField] float weightEscape = 8f;
+    
+// --- Cohesion comfort/zone ---
+    [SerializeField] float cohesionZoneRadius = 6f;       // au-delà de cette portée on prend les voisins pour le centre
+    [SerializeField] float cohesionComfortDistance = 2f;  // en-dessous de cette distance moyenne, cohésion = 0
+
+    [SerializeField] float maxSpeedCalm = 1f;
+    [SerializeField] float maxSpeedFear = 4f;
 
 
     void Start()
@@ -52,10 +59,12 @@ public class SheepBoid : MonoBehaviour
     /// </summary>
     /// <param name="x">Distance to the predator</param>
     /// <returns>Weight of the rule</returns>
+    // x = distance au prédateur
     float P(float x)
     {
-        // Sigmoid function with denominator changed from 20 to 0.3
-        return 1f / (1f + Mathf.Exp(-x / 0.3f));
+        const float k = 0.3f; // pente de transition
+        // P ~ 1 quand x << flightZoneRadius, P ~ 0 quand x >> flightZoneRadius
+        return 1f / (1f + Mathf.Exp((x - flightZoneRadius) / k));
     }
 
     /// <summary>
@@ -93,21 +102,24 @@ public class SheepBoid : MonoBehaviour
     /// <returns>coh(s) the cohesion vector</returns>
     Vector3 RuleCohesion()
     {
-        // Récupérer le tableau de tous les moutons
         SheepBoid[] sheeps = SheepHerd.Instance.sheeps;
-
         if (sheeps == null || sheeps.Length == 0)
             return Vector3.zero;
 
-        Vector3 averagePosition = Vector3.zero;
+        Vector3 sumPos = Vector3.zero;
+        float sumDist = 0f;
         int count = 0;
 
-        // Calculer la position moyenne (hors soi-même)
+        // On ne considère que les voisins dans un rayon de cohésion
         foreach (var sheep in sheeps)
         {
-            if (sheep != this)
+            if (sheep == this) continue;
+
+            float d = Vector3.Distance(transform.position, sheep.transform.position);
+            if (d <= cohesionZoneRadius)
             {
-                averagePosition += sheep.transform.position;
+                sumPos += sheep.transform.position;
+                sumDist += d;
                 count++;
             }
         }
@@ -115,16 +127,29 @@ public class SheepBoid : MonoBehaviour
         if (count == 0)
             return Vector3.zero;
 
-        averagePosition /= count;
+        Vector3 center = sumPos / count;
+        Vector3 dir = center - transform.position;
+        dir.y = 0f;
 
-        // Direction vers le centre du troupeau
-        Vector3 directionToCenter = averagePosition - transform.position;
+        if (dir.sqrMagnitude < 1e-6f)
+            return Vector3.zero;
 
-        if (directionToCenter != Vector3.zero)
-            directionToCenter.Normalize();
+        dir.Normalize();
 
-        return directionToCenter;
+        // Facteur de cohésion : 0 si troupeau déjà "confort", 1 si très dispersé
+        float avgDist = sumDist / count;
+        float factor = Mathf.InverseLerp(cohesionComfortDistance, cohesionZoneRadius, avgDist);
+        // avgDist <= comfort  -> factor = 0 (pas d’attraction)
+        // avgDist >= zone     -> factor = 1 (attraction max)
+
+        Vector3 result = dir * factor;
+
+        // Debug optionnel pour visualiser la cohésion
+        // Debug.DrawRay(transform.position, result * 2f, Color.cyan);
+
+        return result;
     }
+
 
     /// <summary>
     /// 3.5
@@ -263,7 +288,7 @@ public class SheepBoid : MonoBehaviour
         float wC = CombineWeight(weightCohesionBase, weightCohesionFear, distanceToPredator);
         float wS = CombineWeight(weightSeparationFear, weightSeparationBase, distanceToPredator);
         float wA = CombineWeight(weightAlignmentBase, weightAlignmentFear, distanceToPredator);
-        float wE = weightEscape;
+        float wE = weightEscape * P(distanceToPredator);
         float wPen = 3f; // poids fixe de la règle d’encloisonnement
 
         // Combinaison des règles selon leurs poids
@@ -279,7 +304,7 @@ public class SheepBoid : MonoBehaviour
             return Vector3.zero;
         
 
-        return v;
+        return v.normalized;
     }
 
     void Update()
@@ -294,36 +319,32 @@ public class SheepBoid : MonoBehaviour
     /// </summary>
     void Move()
     {
-        float flightZoneRadius = 7;
         //Velocity under which the sheep do not move
         float minVelocity = 0.1f;
-        //Max velocity of the sheep
-        float maxVelocityBase = 1;
-        //Max velocity of the sheep when a predator is close
-        float maxVelocityFear = 4;
 
         float distanceToPredator = (transform.position - predator.position).magnitude;
 
-        //Clamp the velocity to a maximum that depends on the distance to the predator
-        float currentMaxVelocity = Mathf.Lerp(maxVelocityBase, maxVelocityFear, 1 - (distanceToPredator / flightZoneRadius));
+        // Peur ∈ [0..1] : proche -> 1, loin -> 0 (ta P déjà corrigée)
+        float fear = P(distanceToPredator);
 
-        targetVelocity = Vector3.ClampMagnitude(targetVelocity, currentMaxVelocity);
+        // Vitesse max contrôlée UNIQUEMENT par la peur (plus propre)
+        float currentMaxVelocity = Mathf.Lerp(maxSpeedCalm, maxSpeedFear, fear);
 
-        //Ignore the velocity if it's too small
-        if (targetVelocity.magnitude < minVelocity)
-            targetVelocity = Vector3.zero;
+        // targetVelocity est maintenant une DIRECTION (ApplyRules normalise)
+        Vector3 desired = targetVelocity * currentMaxVelocity;
 
-        //Draw the velocity as a blue line coming from the sheep in the scene view
-        Debug.DrawRay(transform.position, targetVelocity, Color.blue);
+        // Ignore small velocities
+        if (desired.magnitude < minVelocity)
+            desired = Vector3.zero;
 
-        velocity = targetVelocity;
+        Debug.DrawRay(transform.position, desired, Color.blue);
 
-        //Make sure we don't move the sheep verticaly by mistake
-        velocity.y = 0;
+        velocity = desired;
+        velocity.y = 0f;
 
-        //Move the sheep
         transform.Translate(velocity * Time.deltaTime, Space.World);
     }
+
 
     void LateUpdate()
     {
